@@ -1,0 +1,34 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install '.[dev]'
+      - run: ruff check .
+      - run: mypy redgate
+      - run: pytest --cov=redgate --cov-report=term-missing --cov-fail-under=70
+      - run: >
+          redgate run --suite injection-basic --suite agent-indirect --suite jailbreak-proxy
+          --target mock-resistant --policy acme-bank
+      - name: Check the vulnerable fixture blocks
+        run: |
+          status=0
+          output=$(redgate run --suite injection-basic --target mock-vulnerable --policy default) || status=$?
+          printf '%s\n' "$output"
+          test "$status" = 2
+          grep -Fx 'BLOCK (default)' <<< "$output"
+      - name: Build and smoke-test the container
+        run: |
+          docker build --tag redgate:ci .
+          docker run --rm redgate:ci run --suite injection-basic --target mock-resistant --policy default

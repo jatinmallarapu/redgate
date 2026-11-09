@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "redgate-eval"
+version = "0.1.0"
+description = "Policy-gated LLM and agent security evaluation"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.28,<1",
+    "pydantic>=2.10,<3",
+    "PyYAML>=6.0.2,<7",
+    "typer>=0.15,<1",
+]
+
+[project.optional-dependencies]
+dev = ["mypy>=1.15,<2", "pytest>=8.3,<10", "pytest-cov>=6,<8", "ruff>=0.11,<1", "types-PyYAML>=6.0.12"]
+hf = ["torch>=2.5,<3", "transformers>=4.48,<5"]
+
+[project.scripts]
+redgate = "redgate.cli:app"
+
+[tool.setuptools.packages.find]
+include = ["redgate*"]
+
+[tool.setuptools.package-data]
+redgate = ["configs/*/*.yaml"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+disable_error_code = ["import-untyped", "import-not-found"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

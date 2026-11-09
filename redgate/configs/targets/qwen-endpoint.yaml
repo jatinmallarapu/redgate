@@ -1,0 +1,3 @@
+kind: openai
+model: Qwen/Qwen2.5-0.5B-Instruct
+base_url: http://localhost:8000/v1

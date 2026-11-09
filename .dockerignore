@@ -1,0 +1,8 @@
+*
+!Dockerfile
+!pyproject.toml
+!README.md
+!redgate/
+!redgate/**
+**/__pycache__/
+**/*.pyc
