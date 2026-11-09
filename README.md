@@ -102,7 +102,7 @@ Candidate datasets for future guard evaluation include the following.
 python -m pip install -e '.[dev]'
 ruff check .
 mypy redgate
-pytest --cov=redgate --cov-report=term-missing --cov-fail-under=70
+python -m pytest --cov=redgate --cov-report=term-missing --cov-fail-under=70
 ```
 
 [Design decisions](docs/design-decisions.md) · [Measured smoke results](docs/results.md)

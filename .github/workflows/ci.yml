@@ -17,7 +17,7 @@ jobs:
       - run: python -m pip install '.[dev]'
       - run: ruff check .
       - run: mypy redgate
-      - run: pytest --cov=redgate --cov-report=term-missing --cov-fail-under=70
+      - run: python -m pytest --cov=redgate --cov-report=term-missing --cov-fail-under=70
       - run: >
           redgate run --suite injection-basic --suite agent-indirect --suite jailbreak-proxy
           --target mock-resistant --policy acme-bank
